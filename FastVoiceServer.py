@@ -5,8 +5,28 @@ import numpy as np
 import wave
 import io
 import base64
+import os
+from contextlib import asynccontextmanager
+import logging
 
-app = FastAPI()
+import SystemConfig
+
+logger = logging.getLogger(__name__)
+
+os.environ["CUDA_LAUNCH_BLOCKING"] = "1"
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    # ✅ 启动前执行
+    logger.info("FastAPI 启动：is_use_gpu: %s", SystemConfig.is_use_gpu)
+    logger.info("FastAPI 启动：is_dev_mode: %s", SystemConfig.is_dev_mode)
+
+    yield  # 🟢 应用运行中
+
+    # ✅ 关闭前执行（可选）
+    logger.info("FastAPI 即将关闭")
+app = FastAPI(lifespan=lifespan)
+
 
 
 # 定义请求数据模型
@@ -66,3 +86,23 @@ async def synthesize_speech(req: TTSRequest):
     # 5. 将WAV字节数据编码为 base64 字符串，并作为JSON返回
     audio_base64 = base64.b64encode(wav_bytes).decode('utf-8')
     return {"audio": audio_base64}
+
+if __name__ == "__main__":
+    import uvicorn
+
+    if SystemConfig.is_dev_mode:
+        uvicorn.run(
+            "FastVoiceServer:app",
+            host="0.0.0.0",
+            port=8189,
+            reload=SystemConfig.is_dev_mode,
+            log_config="log_config.yml"
+        )
+    else:
+        uvicorn.run(
+            app,
+            host="0.0.0.0",
+            port=8189,
+            reload=SystemConfig.is_dev_mode,
+            log_config="log_config.yml"
+        )

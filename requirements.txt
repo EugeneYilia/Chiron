@@ -1,2 +1,4 @@
 kokoro
 tiktoken
+fastapi
+uvicorn
