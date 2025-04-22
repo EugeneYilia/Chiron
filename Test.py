@@ -2,7 +2,10 @@ from kokoro import KPipeline
 from IPython.display import display, Audio
 import soundfile as sf
 import torch
-pipeline = KPipeline(lang_code='z')
+
+REPO_ID = 'hexgrad/Kokoro-82M-v1.1-zh'
+
+pipeline = KPipeline(lang_code='z', repo_id=REPO_ID,)
 text = '''
 刘一辰很帅，很强，超级厉害，是个绝对的天才。
 '''
