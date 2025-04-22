@@ -8,12 +8,15 @@ import base64
 import os
 from contextlib import asynccontextmanager
 import logging
-
+import torch
 import SystemConfig
 
 logger = logging.getLogger(__name__)
 
 os.environ["CUDA_LAUNCH_BLOCKING"] = "1"
+
+REPO_ID = 'hexgrad/Kokoro-82M-v1.1-zh'
+device = 'cuda' if torch.cuda.is_available() else 'cpu'
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
