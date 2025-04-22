@@ -43,9 +43,9 @@ async def synthesize_speech(req: TTSRequest):
     # 1. 根据 voice_id 选择对应的 Kokoro 声音模型
     voice_choice = req.voice_id.lower()
     if voice_choice == "male":
-        selected_voice = "zm_yunyang"  # 默认选用一个男声音色
+        selected_voice = "zm_010"  # 默认选用一个男声音色
     elif voice_choice == "female":
-        selected_voice = "zf_xiaoxiao"  # 默认选用一个女声音色
+        selected_voice = "zf_001"  # 默认选用一个女声音色
     else:
         selected_voice = voice_choice  # 如果指定了具体声音ID，则直接使用
 
@@ -85,8 +85,8 @@ async def synthesize_speech(req: TTSRequest):
     wav_bytes = buffer.getvalue()
 
     # 测试使用
-    with open("output.wav", "wb") as f:
-        f.write(wav_bytes)
+    # with open("output.wav", "wb") as f:
+    #     f.write(wav_bytes)
 
     # 5. 将WAV字节数据编码为 base64 字符串，并作为JSON返回
     audio_base64 = base64.b64encode(wav_bytes).decode('utf-8')
