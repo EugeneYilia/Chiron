@@ -2,3 +2,4 @@ kokoro
 tiktoken
 fastapi
 uvicorn
+colorlog
