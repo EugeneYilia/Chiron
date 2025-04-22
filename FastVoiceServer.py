@@ -59,6 +59,10 @@ async def synthesize_speech(req: TTSRequest):
         wav_file.writeframes(audio_int16.tobytes())
     wav_bytes = buffer.getvalue()
 
+    # 测试使用
+    with open("output.wav", "wb") as f:
+        f.write(wav_bytes)
+
     # 5. 将WAV字节数据编码为 base64 字符串，并作为JSON返回
     audio_base64 = base64.b64encode(wav_bytes).decode('utf-8')
     return {"audio": audio_base64}
