@@ -3,3 +3,4 @@ tiktoken
 fastapi
 uvicorn
 colorlog
+misaki[zh]
