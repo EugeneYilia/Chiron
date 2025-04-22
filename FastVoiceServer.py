@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from pydantic import BaseModel
-from kokoro import KPipeline  # Kokoro TTS 推理库
+from kokoro import KModel, KPipeline  # Kokoro TTS 推理库
 import numpy as np
 import wave
 import io
@@ -52,7 +52,9 @@ async def synthesize_speech(req: TTSRequest):
     # 从 voice_id 前缀确定语言代码，如 'a' 表示美式英语
     lang_code = selected_voice[0]
     # 初始化 Kokoro 推理管线（加载相应语言的模型）
-    pipeline = KPipeline(lang_code=lang_code)
+
+    model = KModel(repo_id=REPO_ID).to(device).eval()
+    pipeline = KPipeline(lang_code=lang_code, repo_id=REPO_ID, model=model)
 
     # 2. 利用 Kokoro 模型合成语音
     audio_segments = []
