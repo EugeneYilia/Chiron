@@ -53,8 +53,17 @@ async def synthesize_speech(req: TTSRequest):
     lang_code = selected_voice[0]
     # 初始化 Kokoro 推理管线（加载相应语言的模型）
 
+    en_pipeline = KPipeline(lang_code='a', repo_id=REPO_ID, model=False)
+
+    def en_callable(text):
+        if text == 'Kokoro':
+            return 'kˈOkəɹO'
+        elif text == 'Sol':
+            return 'sˈOl'
+        return next(en_pipeline(text)).phonemes
+
     model = KModel(repo_id=REPO_ID).to(device).eval()
-    pipeline = KPipeline(lang_code=lang_code, repo_id=REPO_ID, model=model)
+    pipeline = KPipeline(lang_code=lang_code, repo_id=REPO_ID, model=model, en_callable=en_callable)
 
     # 2. 利用 Kokoro 模型合成语音
     audio_segments = []
