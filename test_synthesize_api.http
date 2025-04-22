@@ -3,6 +3,6 @@ POST http://127.0.0.1:8189/synthesize
 Content-Type: application/json
 
 {
-  "text": "刘一辰很帅，很强，超级厉害，是个绝对的天才",
+  "text": "刘一辰很帅，很强，超级厉害，是个绝对的天才。",
   "voice_id": "female"
 }
